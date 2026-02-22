@@ -73,3 +73,10 @@ Clone the repo:
 git clone https://github.com/sultan-lion/Crypto.git
 cd Crypto
 
+python -m venv .venv
+.venv\Scripts\activate
+
+pip install -r requirements.txt
+
+
+
