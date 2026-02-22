@@ -1,0 +1,22 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
+
+CALENDAR_ID = "primary"
+TIMEZONE = "Asia/Dubai"
+
+COINS = ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
+
+BUY_DAY_SCORE = 55
+SELL_DAY_SCORE = 35
+
+ATR_PERIOD = 14
+ATR_MULTIPLIER = 1.5
+R_MULTIPLIER = 2.0
+
+SMA_TREND_PERIOD = 200
+DCA_LEVELS_PCT = [0.0, -1.0, -2.0]

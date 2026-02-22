@@ -1,0 +1,15 @@
+# Secrets
+.env
+token.json
+oauth_client.json
+credentials.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual env / IDE
+.venv/
+.idea/
+.vscode/
