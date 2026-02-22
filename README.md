@@ -1,207 +1,75 @@
-Crypto Sentiment Telegram Bot
+# Crypto Sentiment Telegram Bot
 
-A rules-based crypto trading assistant that analyzes market liquidity and institutional activity, then sends a daily actionable trading plan (BUY / HOLD / RISK-OFF + Entry / SL / TP) directly to Telegram.
+A daily crypto trading assistant that analyzes market liquidity and institutional activity, then sends a clear trading plan to Telegram (BUY / HOLD / RISK-OFF + Entry / SL / TP).
 
-The system combines macro crypto signals (ETF flows, stablecoins, VC funding, treasuries) with market structure (trend + volatility) to produce a daily trading decision.
+This is **not a price prediction bot** — it is a rules-based decision support tool.
 
-This is not a prediction bot.
-It is a decision-support engine.
+---
 
-What the Bot Does
+## What It Does
 
 Every day the bot:
 
-Collects crypto market sentiment data
+1. Collects market sentiment data
+2. Calculates a market score (0–100)
+3. Classifies the day:
+   - BUY DAY
+   - HOLD DAY
+   - SELL / RISK-OFF DAY
+4. Checks trend direction (SMA200)
+5. Measures volatility (ATR14)
+6. Generates a trading plan
+7. Sends the result to Telegram
 
-Scores the overall market (0 → 100)
+---
 
-Determines the day type:
+## Market Signals Used
 
-BUY DAY
+The score is based on real capital flows:
 
-HOLD DAY
+- Spot Bitcoin ETF flows (institutional demand)
+- Stablecoin market cap change (liquidity entering/leaving crypto)
+- Crypto VC funding activity (long-term confidence)
+- Digital asset treasury purchases (corporate adoption)
 
-SELL / RISK-OFF DAY
+---
 
-Checks trend direction per coin (SMA200)
+## Trading Logic
 
-Calculates volatility (ATR14)
+**Day Classification**
 
-Generates a trading plan:
+| Score | Action |
+|------|------|
+| ≥ 55 | BUY DAY |
+| 36–54 | HOLD DAY |
+| ≤ 35 | SELL / RISK-OFF |
 
-Entry levels (DCA)
+**Trend Filter**
+- Price > SMA200 → Long trades allowed
+- Price < SMA200 → Avoid longs
 
-Stop Loss
+**Risk Model (ATR14)**
+- SL = Entry − (1.5 × ATR)
+- TP ≈ 2R (twice the risk)
 
-Take Profit
+---
 
-Sends a formatted report to Telegram
-
-Market Signals Used
-
-The sentiment score is built from 4 liquidity indicators:
-
-Indicator	What it Measures	Meaning
-Spot ETF Flows	Institutional demand	Smart money entering/leaving BTC
-Stablecoin Market Cap	Liquidity	Capital entering crypto ecosystem
-Crypto VC Funding	Long-term confidence	Future cycle strength
-Digital Asset Treasury Purchases	Corporate conviction	Balance-sheet adoption
-
-These represent capital movement, not social media sentiment.
-
-Trading Logic
-Day Classification
-Score	Action
-≥ 55	BUY DAY
-36-54	HOLD DAY
-≤ 35	SELL / RISK-OFF
-Trend Filter
-
-Each coin must agree with the macro environment:
-
-Price > SMA200 → Uptrend → Long allowed
-
-Price < SMA200 → Downtrend → Long avoided
-
-Volatility Model (ATR14)
-
-ATR14 = average daily movement over last 14 days.
-
-Used to calculate risk:
-
-SL = Entry − (1.5 × ATR)
-TP = Entry + (2 × Risk)
-
-This prevents random stop losses due to normal volatility.
-
-Coins Covered
-
-Default:
-
+## Supported Coins
+Configured in `config.py` (default):
 BTCUSDT
 ETHUSDT
 SOLUSDT
 
-You can edit in config.py.
+---
 
-Example Telegram Output
 
-Crypto Signal: BUY DAY (62/100)
+---
 
-Sentiment
-ETF flow: +1.2B
-Stablecoins: +3.5B
-VC funding: 7 rounds
+## Installation
 
-BTCUSDT LONG
-Entry: 63,500 / 62,900 / 62,200
-SL: 61,750
-TP: 67,100
+Clone the repo:
 
-ETHUSDT LONG
-Entry: 3,180 / 3,140 / 3,100
-SL: 3,020
-TP: 3,520
-
-Installation
-1) Clone the repository
+```bash
 git clone https://github.com/sultan-lion/Crypto.git
 cd Crypto
-2) Create virtual environment
 
-Windows:
-
-python -m venv .venv
-.venv\Scripts\activate
-
-Mac/Linux:
-
-python3 -m venv .venv
-source .venv/bin/activate
-3) Install dependencies
-pip install -r requirements.txt
-Telegram Setup
-1) Create a Bot
-
-Open Telegram → search BotFather
-
-/newbot
-
-Choose name and username (must end with "bot")
-
-BotFather will give:
-
-BOT_TOKEN
-2) Start the bot
-
-Open your bot chat and press Start
-Send message: hi
-
-3) Get Chat ID
-
-Run:
-
-python get_chat_id.py
-
-Copy the printed chat_id.
-
-Environment Variables
-
-Create a file:
-
-.env
-
-Add:
-
-TELEGRAM_BOT_TOKEN=YOUR_TOKEN
-TELEGRAM_CHAT_ID=YOUR_CHAT_ID
-Run the Bot
-
-Manual run:
-
-python main.py
-
-You should instantly receive a Telegram message.
-
-Automation (Daily Execution)
-
-Recommended: Windows Task Scheduler
-
-Run daily at 9 AM UAE time.
-
-Program:
-
-<path_to_venv>\Scripts\python.exe
-
-Arguments:
-
-main.py
-
-Start in:
-
-project folder
-
-The bot will send a daily trading plan automatically.
-
-File Structure
-main.py               → Orchestrator
-sources.py            → Sentiment data collectors
-market_data.py        → Binance price + ATR + SMA
-scoring.py            → Market scoring engine
-telegram_push.py      → Telegram sender
-config.py             → Strategy settings
-.env                  → Secrets (not committed)
-Disclaimer
-
-This project is for educational and decision-support purposes only.
-
-It does NOT:
-
-predict prices
-
-guarantee profits
-
-replace risk management
-
-Crypto markets are volatile.
-Always verify signals and use proper position sizing.
