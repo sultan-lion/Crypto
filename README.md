@@ -61,7 +61,10 @@ ETHUSDT
 SOLUSDT
 
 ---
+## Disclaimer
 
+For educational and decision-support purposes only.
+Not financial advice. Always verify signals and manage risk.
 
 ---
 
@@ -80,9 +83,5 @@ pip install -r requirements.txt
 
 ---
 
-**Disclaimer**
-
-For educational and decision-support purposes only.
-Not financial advice. Always verify signals and manage risk.
 
 
